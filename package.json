@@ -1,0 +1,12 @@
+{
+  "name": "yandex-auth-token",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --watch server.js",
+    "start": "bun server.js",
+    "check": "bun --eval \"await import('./server.js'); console.log('ok')\"",
+    "test": "bun test"
+  }
+}

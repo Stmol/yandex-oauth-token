@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Securely get a Yandex access token</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <div class="site">
+      <header class="hero">
+        <div class="hero__gradient" aria-hidden="true"></div>
+
+        <div class="container hero__inner">
+          <div class="topbar">
+            <div id="language-switch" class="language-switch" role="group" aria-label="Language switcher">
+              <button
+                id="lang-en"
+                class="language-switch__button"
+                type="button"
+                data-lang="en"
+                aria-pressed="false"
+              >
+                EN
+              </button>
+              <button
+                id="lang-ru"
+                class="language-switch__button"
+                type="button"
+                data-lang="ru"
+                aria-pressed="false"
+              >
+                RU
+              </button>
+            </div>
+          </div>
+
+          <section class="hero__content">
+            <h1 data-i18n="hero.title"></h1>
+            <div class="hero__lead" data-i18n-html="hero.descriptionHtml"></div>
+
+            <div id="hero-actions" class="hero__actions">
+              <button id="start-button" class="button button--primary" type="button"></button>
+            </div>
+
+            <label id="consent-toggle" class="consent-toggle" for="consent-checkbox">
+              <input id="consent-checkbox" class="consent-toggle__input" type="checkbox" />
+              <span class="consent-toggle__text" data-i18n="controls.consent"></span>
+            </label>
+
+            <div class="hero__feedback">
+              <p id="message" class="notice notice--success is-hidden"></p>
+              <p id="error" class="notice notice--error is-hidden"></p>
+            </div>
+          </section>
+        </div>
+      </header>
+
+      <main class="container page">
+        <section class="features">
+          <article class="card feature-card">
+            <div class="step-chip" aria-hidden="true">
+              <span>1</span>
+            </div>
+            <h2 data-i18n="features.0.title"></h2>
+            <p data-i18n="features.0.description"></p>
+          </article>
+
+          <article class="card feature-card">
+            <div class="step-chip" aria-hidden="true">
+              <span>2</span>
+            </div>
+            <h2 data-i18n="features.1.title"></h2>
+            <div class="feature-card__details" data-i18n-html="features.1.descriptionHtml"></div>
+          </article>
+
+          <article class="card feature-card">
+            <div class="step-chip" aria-hidden="true">
+              <span>3</span>
+            </div>
+            <h2 data-i18n="features.2.title"></h2>
+            <p data-i18n="features.2.description"></p>
+          </article>
+        </section>
+
+        <section id="token-section" class="token-stack is-hidden">
+          <article id="primary-token-card" class="card token-card">
+            <div class="section-head section-head--space">
+              <div>
+                <h2 data-i18n="tokens.primary.title"></h2>
+              </div>
+              <button id="primary-copy-button" class="button button--secondary" type="button"></button>
+            </div>
+
+            <p class="token-card__hint" data-i18n="tokens.primary.hint"></p>
+            <pre id="primary-token-output" class="token-output"></pre>
+          </article>
+
+          <article id="music-token-card" class="card token-card service-token-card is-hidden">
+            <div class="section-head section-head--space">
+              <div>
+                <h2 data-i18n="tokens.music.title"></h2>
+              </div>
+              <button id="music-action-button" class="button button--secondary" type="button"></button>
+            </div>
+
+            <p class="token-card__hint" data-i18n="tokens.music.hint"></p>
+            <p id="music-token-placeholder" class="token-card__placeholder" data-i18n="tokens.music.placeholder"></p>
+            <pre id="music-token-output" class="token-output is-hidden"></pre>
+          </article>
+
+          <article id="shedevrum-token-card" class="card token-card service-token-card is-hidden">
+            <div class="section-head section-head--space">
+              <div>
+                <h2 data-i18n="tokens.shedevrum.title"></h2>
+              </div>
+              <button id="shedevrum-action-button" class="button button--secondary" type="button"></button>
+            </div>
+
+            <p class="token-card__hint" data-i18n="tokens.shedevrum.hint"></p>
+            <p
+              id="shedevrum-token-placeholder"
+              class="token-card__placeholder"
+              data-i18n="tokens.shedevrum.placeholder"
+            ></p>
+            <pre id="shedevrum-token-output" class="token-output is-hidden"></pre>
+          </article>
+        </section>
+
+        <footer class="site-footer" data-i18n-html="footer.noteHtml"></footer>
+      </main>
+    </div>
+  </body>
+</html>
