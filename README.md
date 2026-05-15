@@ -12,6 +12,11 @@ Inspired by [`yandex_session.py`](https://github.com/AlexxIT/YandexStation/blob/
 > [!WARNING]
 > This application works with sensitive access tokens. Run it only in a trusted environment and never share generated tokens unless you fully understand the consequences.
 
+> [!IMPORTANT]
+> You can safely try the online service at [https://ya-token.site](https://ya-token.site).
+>
+> The service does not collect any information about the user or their data. However, you remain fully responsible for protecting your own data and for any actions you take while using this service.
+
 ## Table of Contents
 
 - [Features](#features)
@@ -72,6 +77,25 @@ bun run start
 bun run check
 bun test
 ```
+
+## Docker Deploy
+
+Для VPS-деплоя подготовлены:
+
+- `Dockerfile`
+- `compose.yaml`
+- `deploy/deploy.fish`
+- `deploy/.env.production.example`
+
+Короткий сценарий:
+
+```bash
+cp deploy/.env.production.example .env.production
+./deploy/deploy.fish
+```
+
+Перед деплоем обязательно заполни production secrets и оставь `HOST=0.0.0.0`.
+Подробная инструкция: [docs/deploy.md](./docs/deploy.md).
 
 ## Environment Variables
 
