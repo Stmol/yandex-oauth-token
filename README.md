@@ -127,7 +127,7 @@ All other variables already have defaults and are used to tune server behavior, 
 
 ### Logging
 
-- `LOG_ENABLED` - enables structured logs
+- `LOG_ENABLED` - enables structured logs explicitly; in `NODE_ENV=production` safe logs are enabled by default
 - `LOG_LEVEL` - `error`, `warn`, `info`, `debug`
 
 ### Access Control
@@ -256,7 +256,9 @@ The project already includes [`entitlements.plist`](./entitlements.plist) with t
 - enable `REQUIRE_ACCESS_AUTH=true` before exposing the service beyond local use
 - optionally restrict access further with `IP_ALLOWLIST`
 - API responses are returned with `Cache-Control: no-store`
-- logs redact sensitive token and auth data
+- Docker and server logs use structured JSON lines
+- logs include token flow start, completion, and failure events for `primary`, `music`, and `shedevrum`
+- logs redact sensitive token and auth data and never include request bodies, cookies, auth headers, IPs, or raw user tokens
 - raw upstream responses are not exposed to the browser
 - `PRIMARY_TOKEN_SEAL_SECRET` is required in production and is used for replay protection
 

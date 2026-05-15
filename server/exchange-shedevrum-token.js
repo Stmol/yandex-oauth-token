@@ -4,14 +4,13 @@ import {
   YANDEX_MOBILEPROXY_ORIGIN,
   env,
 } from "./config.js";
-import { logger, summarizeResponseBody } from "./logger.js";
+import { summarizeResponseBody } from "./logger.js";
 
 export async function exchangePrimaryTokenForShedevrumToken(primaryToken, fetchFn = fetch) {
   if (!primaryToken) {
     throw new Error("Primary Yandex token is required");
   }
 
-  const startedAt = Date.now();
   const { clientId, clientSecret } = getShedevrumExchangeConfig();
   const response = await fetchFn(createShedevrumTokenUrl(), {
     method: "POST",
@@ -35,10 +34,6 @@ export async function exchangePrimaryTokenForShedevrumToken(primaryToken, fetchF
   if (!json.access_token || !String(json.access_token).startsWith("2.")) {
     throw new Error("Yandex did not return a Shedevrum token");
   }
-
-  logger.info("shedevrum_token_exchanged", {
-    durationMs: Date.now() - startedAt,
-  });
 
   return json.access_token;
 }

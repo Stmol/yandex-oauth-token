@@ -1,12 +1,11 @@
 import { env, getMusicExchangeConfig, YANDEX_MOBILEPROXY_ORIGIN } from "./config.js";
-import { logger, summarizeResponseBody } from "./logger.js";
+import { summarizeResponseBody } from "./logger.js";
 
 export async function exchangePrimaryTokenForMusicToken(primaryToken, fetchFn = fetch) {
   if (!primaryToken) {
     throw new Error("Primary Yandex token is required");
   }
 
-  const startedAt = Date.now();
   const { clientId, clientSecret } = getMusicExchangeConfig();
   const response = await fetchFn(createMusicTokenUrl(), {
     method: "POST",
@@ -32,10 +31,6 @@ export async function exchangePrimaryTokenForMusicToken(primaryToken, fetchFn = 
   if (!String(json.access_token).startsWith("y0__")) {
     throw new Error("Yandex did not return a Yandex Music token");
   }
-
-  logger.info("music_token_exchanged", {
-    durationMs: Date.now() - startedAt,
-  });
 
   return json.access_token;
 }

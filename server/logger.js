@@ -48,6 +48,18 @@ export function createLogger({ enabled = false, level = "info", sink = defaultSi
   };
 }
 
+export function logTokenFlowStarted(log, meta) {
+  log.info("token_flow_started", createTokenFlowMeta(meta));
+}
+
+export function logTokenFlowCompleted(log, meta) {
+  log.info("token_flow_completed", createTokenFlowMeta(meta));
+}
+
+export function logTokenFlowFailed(log, meta) {
+  log.warn("token_flow_failed", createTokenFlowMeta(meta));
+}
+
 export function sanitizeForLogging(value, options = {}) {
   return sanitizeValue(value, [], {
     includeStack: options.includeStack === true,
@@ -102,6 +114,24 @@ export const logger = createLogger({
   enabled: env.logEnabled,
   level: env.logLevel,
 });
+
+function createTokenFlowMeta({ tokenKind, flow, stage, durationMs, error } = {}) {
+  const meta = {
+    tokenKind,
+    flow,
+    stage,
+  };
+
+  if (typeof durationMs === "number") {
+    meta.durationMs = durationMs;
+  }
+
+  if (error !== undefined) {
+    meta.error = error;
+  }
+
+  return meta;
+}
 
 function sanitizeValue(value, path, state) {
   if (value instanceof Error) {
@@ -182,6 +212,10 @@ function sanitizeString(value) {
 
 function isSensitiveKey(key) {
   const normalizedKey = key.replace(/[^a-z0-9]/gi, "").toLowerCase();
+
+  if (normalizedKey === "tokenkind") {
+    return false;
+  }
 
   if (
     normalizedKey.includes("token") ||

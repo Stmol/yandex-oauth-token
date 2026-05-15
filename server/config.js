@@ -52,7 +52,7 @@ function resolvePrimaryTokenSealSecret() {
 export const env = {
   host: readEnv("HOST", "127.0.0.1"),
   port: readEnvNumber("PORT", 3101),
-  logEnabled: readEnvBoolean("LOG_ENABLED", false),
+  logEnabled: readEnvBoolean("LOG_ENABLED", readEnv("NODE_ENV") === "production"),
   logLevel: readEnv("LOG_LEVEL", "info").toLowerCase(),
   yandexAuthSessionTtlMs: readEnvNumber("YANDEX_AUTH_SESSION_TTL_MS", 10 * 60 * 1000),
   requireAccessAuth: readEnvBoolean("REQUIRE_ACCESS_AUTH", readEnv("NODE_ENV") === "production"),

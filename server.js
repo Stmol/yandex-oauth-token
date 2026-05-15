@@ -1,7 +1,12 @@
 import { env, SESSION_COOKIE_NAME } from "./server/config.js";
 import { exchangePrimaryTokenForMusicToken } from "./server/exchange-music-token.js";
 import { exchangePrimaryTokenForShedevrumToken } from "./server/exchange-shedevrum-token.js";
-import { logger } from "./server/logger.js";
+import {
+  logger,
+  logTokenFlowCompleted,
+  logTokenFlowFailed,
+  logTokenFlowStarted,
+} from "./server/logger.js";
 import {
   createYandexAuthSession,
   getActiveYandexAuthSessionCount,
@@ -179,23 +184,33 @@ async function handleRequest(request) {
   }
 }
 
-async function handlePrimaryTokenExchange({
+export async function handlePrimaryTokenExchange({
   request,
   service,
   exchangeFn,
   errorMessage,
   securityHeaders,
+  log = logger,
 }) {
   const startedAt = Date.now();
-  const { primaryToken } = await readExchangeBody(request);
-  const sealedToken = beginPrimaryTokenExchange(primaryToken, service);
+  let sealedToken;
+
+  logTokenFlowStarted(log, {
+    tokenKind: service,
+    flow: "exchange",
+    stage: "exchange_token",
+  });
 
   try {
+    const { primaryToken } = await readExchangeBody(request);
+    sealedToken = beginPrimaryTokenExchange(primaryToken, service);
     const token = await exchangeFn(primaryToken);
     completePrimaryTokenExchange(sealedToken, service);
 
-    logger.info("primary_token_exchange_completed", {
-      service,
+    logTokenFlowCompleted(log, {
+      tokenKind: service,
+      flow: "exchange",
+      stage: "exchange_token",
       durationMs: Date.now() - startedAt,
     });
 
@@ -208,9 +223,14 @@ async function handlePrimaryTokenExchange({
       securityHeaders,
     );
   } catch (error) {
-    failPrimaryTokenExchange(sealedToken, service);
-    logger.warn("primary_token_exchange_failed", {
-      service,
+    if (sealedToken) {
+      failPrimaryTokenExchange(sealedToken, service);
+    }
+
+    logTokenFlowFailed(log, {
+      tokenKind: service,
+      flow: "exchange",
+      stage: "exchange_token",
       durationMs: Date.now() - startedAt,
       error,
     });
